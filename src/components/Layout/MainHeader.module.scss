@@ -1,0 +1,39 @@
+@import 'style/variables.scss';
+
+.header {
+  width: 100%;
+  height: 5rem;
+  padding: 0 10%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $deepGray;
+}
+
+h1 {
+  font-size: 36px;
+  a {
+    color: #ffffff;
+    &:hover, &.active {
+      color: $yellow;
+      text-decoration: underline;
+    }
+  }
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  a {
+    .button {
+      color: $red;
+      border-color: $red;
+    }
+    &:hover, &.active {
+      .button {
+        background-color: $yellow;
+      }
+    }
+  }
+}

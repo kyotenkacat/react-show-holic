@@ -1,0 +1,10 @@
+@import 'style/variables.scss';
+
+.favorite {
+  color: $red;
+  border-color: transparent;
+  background: rgba(0, 0, 0, 0.7);
+  &:hover {
+    background: $yellow;
+  }
+}

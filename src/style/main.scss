@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #1b1b1b;
+}
+
+iframe {
+  display: none;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+main {
+  padding-top: 20px;
+  position: relative;
+}
+
+a {
+  display: inline-block;
+  text-decoration: none;
+}

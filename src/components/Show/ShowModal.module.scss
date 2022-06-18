@@ -1,0 +1,65 @@
+@import 'style/variables.scss';
+
+.showModal {
+  background: #1f1f1f;
+  color: #ffffff;
+  top: 50%;
+  width: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 600px;
+  padding: 20px;
+  @include rwdmax($mobile) {
+    width: 90%;
+    min-width: 320px;
+  }
+  @include rwdmin($laptop) {
+    padding: 30px;
+  }
+}
+.closeButton {
+  position: absolute;
+  right: -6px;
+  top: -6px;
+  font-size: 24px;
+  color: #ffffff;
+  padding: 0;
+}
+.info {
+  width: 56%;
+  margin-right: 4%;
+  display: inline-block;
+  vertical-align: top;
+  h3, p {
+    margin: 0;
+    line-height: 1.6;
+  }
+  h3 {
+    font-size: 24px;
+  }
+  .originalTitle, span {
+    color: #aaaaaa;
+    font-size: 16px;
+  }
+  .rating {
+    color: $yellow;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+}
+.imgContainer {
+  width: 40%;
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  img {
+    border-radius: 12px;
+    width: 100%;
+  }
+  button {
+    position: absolute;
+    left: 6px;
+    top: 6px;
+  }
+}
