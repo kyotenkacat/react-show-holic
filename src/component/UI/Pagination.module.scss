@@ -1,0 +1,21 @@
+@import 'style/variables.scss';
+
+.pagination {
+  width: max-content;
+  margin: 20px auto 0px;
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  li {
+    font-size: 20px;
+    margin: 0 10px;
+  }
+}
+.button {
+  border: none;
+  color: #ffffff;
+  &.active, &:hover:not([disabled]) {
+    color: $yellow;
+  }
+}

@@ -1,0 +1,51 @@
+@import 'style/variables.scss';
+
+.filter {
+  // fix me 這個margin 移到show list
+  margin: 0 1%;
+  p {
+    margin: 10px 0;
+  }
+}
+.title {
+  color: #ffffff;
+  font-size: 16px;
+  margin-right: 16px;
+}
+.button {
+  color: #ffffff;
+  font-size: 16px;
+  margin-right: 8px;
+  &.active, &:hover {
+    color: $red;
+    background: $yellow;
+    border-color: $yellow;
+  }
+}
+.search {
+  display: flex;
+  .title {
+    align-self: center;
+  }
+  input {
+    background: $deepGray;
+    border: none;
+    font-size: 16px;
+    padding-left: 10px;
+    color: #fff;
+    border-radius: 12px 0 0 12px;
+    width: 200px;
+    &:focus {
+      outline: none;
+    }
+  }
+  button {
+    color: $red;
+    border-radius: 0 12px 12px 0;
+    border-color: $red;
+    background: $deepGray;
+    &:hover {
+      background: $yellow;
+    }
+  }
+}

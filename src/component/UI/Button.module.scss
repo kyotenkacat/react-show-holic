@@ -1,0 +1,32 @@
+@import 'style/variables.scss';
+
+.button {
+  background: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  padding: 6px 10px;
+  border-radius: 12px;
+  i + span {
+    margin-left: 6px;
+  }
+}
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.primary {
+  border-color: $yellow;
+  background-color: $yellow;
+  color: $deepGray;
+  &:hover {
+    color: $red;
+  }
+}
+.cancel {
+  &:hover {
+    color: $deepGray;
+    background: #ffffff;
+  }
+}

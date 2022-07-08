@@ -1,0 +1,37 @@
+@import 'style/variables.scss';
+
+.seperate {
+  border-top: 1px solid #aaaaaa;
+  width: 100%;
+  margin: 30px auto;
+}
+.form {
+  text-align: center;
+}
+.rating {
+  width: max-content;
+  margin: 0 auto 20px;
+  i {
+    cursor: pointer;
+    font-size: 24px;
+    color: #aaaaaa;
+    margin: 0 2px;
+    &.active {
+      color: $red;
+    }
+  }
+}
+.review {
+  textarea {
+    width: 80%;
+    margin: auto;
+  }
+}
+.action {
+  margin: 20px 0 auto;
+  button {
+    &:nth-child(2) {
+      margin-left: 30px;
+    }
+  }
+}

@@ -1,0 +1,63 @@
+@import 'style/variables.scss';
+
+.profile {
+  width: 90%;
+  margin: auto;
+  animation: appear 1s ease-out forwards;
+  h2 {
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.6;
+  }
+}
+.userSection {
+  text-align: center;
+  p {
+    font-size: 24px;
+    color: #fff;
+    margin: 10px 0;
+  }
+  .button {
+    border-color: transparent;
+    background: rgba(0, 0, 0, 0.7);
+    font-size: 14px;
+    color: #ffffff;
+    margin: 0 2px;
+  }
+  .data {
+    margin: 10px;
+    color: #aaaaaa;
+    display: inline-block;
+  }
+  .number {
+    color: $red;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 6px;
+  }
+}
+.favSection {
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .button {
+    color: $yellow;
+    border-color: $yellow;
+    &:hover {
+      color: $red;
+      background-color: $yellow;
+    }
+  }
+}
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

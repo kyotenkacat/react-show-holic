@@ -1,0 +1,36 @@
+@import 'style/variables.scss';
+
+.playList {
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+.item {
+  height: 120px;
+  margin: 1%;
+  background: $deepGray;
+  border-radius: 12px;
+  text-align: center;
+  line-height: 120px;
+  @include rwdmax($pad) {
+    width: 98%;
+  }
+  @include rwd($pad, $laptop) {
+    width: 31.333%;
+  }
+  @include rwdmin($laptop) {
+    width: 23%;
+  }
+  .button {
+    color: $yellow;
+    border-color: $yellow;
+    font-size: 18px;
+  }
+  &:hover {
+    .button:not([disabled]) {
+      background: $yellow;
+      color: $red;
+    }
+  }
+}

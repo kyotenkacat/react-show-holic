@@ -3,12 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 const uiSlice = createSlice({
   name: 'ui',
   initialState: {
-    cartIsVisible: false,
+    loading: false,
     notificationList: []
   },
   reducers: {
-    toggle(state) {
-      state.cartIsVisible = !state.cartIsVisible;
+    setLoading(state, action) {
+      state.loading = action.payload;
     },
     addNotification(state, action) {
       state.notificationList.push({

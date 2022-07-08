@@ -1,0 +1,9 @@
+@import 'style/variables.scss';
+
+.notificationList {
+  position: fixed;
+  right: 0;
+  top: 10vh;
+  z-index: 7;
+  overflow: hidden;
+}

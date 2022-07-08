@@ -1,0 +1,50 @@
+@import 'style/variables.scss';
+
+.AddShowModal {
+  width: 80%;
+  max-width: 600px;
+  @include rwdmax($mobile) {
+    width: 90%;
+    min-width: 320px;
+  }
+}
+.showList {
+  margin-top: 20px;
+  li {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px 0;
+    align-items: center;
+    justify-content: space-between;
+  }
+  img {
+    width: 15%;
+    max-height: 110px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+}
+.info {
+  width: 65%;
+  padding: 0 5%;
+}
+.type {
+  width: 10%;
+}
+.actions {
+  width: 10%;
+  text-align: center;
+  .button {
+    color: $yellow;
+    border-color: $yellow;
+    &:hover {
+      background: $yellow;
+      color: $red;
+    }
+  }
+}
+.seperate {
+  width: 80%;
+  margin: 10px 10%;
+  border-bottom: 1px solid #aaa;
+}
