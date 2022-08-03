@@ -8,42 +8,53 @@
   height: 100vh;
   z-index: 5;
   background: rgba(0, 0, 0, 0.8);
-  animation: appear 0.2s ease-out forwards;
+  @include appearAnimation(0.3s);
 }
 .modal {
   position: fixed;
   z-index: 6;
   border-radius: 12px;
   background: #1f1f1f;
-  color: #ffffff;
+  color: $white;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  overflow: auto;
+  min-width: 320px;
+  @include rwdmax($pad) {
+    max-height: 86vh;
+  }
+  @include rwdmin($pad + 1) {
+    max-height: 90vh;
+  }
   @include rwdmax($laptop) {
     padding: 20px;
   }
-  @include rwdmin($laptop) {
+  @include rwdmin($laptop + 1) {
     padding: 30px;
   }
-  animation: appear 0.2s ease-out forwards;
+  @include appearAnimation(0.3s);
 }
 .closeButton {
   position: absolute;
-  right: -6px;
-  top: -6px;
-  font-size: 24px;
-  color: #ffffff;
+  right: 4px;
+  top: 4px;
+  color: $white;
   padding: 0;
   border-color: transparent;
-  &:hover {
+  @include hover {
     color: $yellow;
   }
-}
-@keyframes appear {
-  from {
-    opacity: 0;
+  i {
+    font-size: 24px;
   }
-  to {
-    opacity: 1;
+}
+.action {
+  margin: 20px 0 auto;
+  text-align: center;
+  button {
+    &:first-child {
+      margin-right: 30px;
+    }
   }
 }

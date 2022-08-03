@@ -1,70 +1,86 @@
-import { Fragment, useState } from 'react';
-import classes from './PlayItem.module.scss';
+import { Fragment, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from "react-router-dom";
+import { deletePlayList } from 'store/playList-slice';
+import { uiActions } from 'store/ui-slice';
+import { find } from 'lodash';
 import Button from 'component/UI/Button';
 import PlayModal from 'component/PlayList/PlayModal';
 import AddShowModal from 'component/PlayList/AddShowModal';
-import { playListActions } from 'store/playList-slice';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from "react-router-dom";
+import Modal from 'component/UI/Modal';
+import classes from './PlayItem.module.scss';
 
 const PlayList = (props) => {
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { item } = props;
+  const showList = useSelector((state) => state.show.itemList);
+  const [itemImg, setItemImg] = useState(null);
   const [actionMenuActive, setActionMenuActive] = useState(false);
   const [modalActive, setModalActive] = useState(false);
   const [addShowModalActive, setAddShowModalActive] = useState(false);
-  const { item } = props;
+  const [warningModalActive, setWarningModalActive] = useState(false);
 
-  const deletePlayList = () => {
-    // fix me show warning
+  useEffect(() => {
+    if (item.showIdList.length !== 0) {
+      const show = find(showList, ['id', item.showIdList[0]]);
+      setItemImg(show.imgUrl);
+    }
+  }, [showList, item.showIdList]);
+
+
+  const shareHandler = () => {
+    navigator.clipboard.writeText(`${window.location.origin}/playListDetail/${item.id}`);
     dispatch(
-      playListActions.deletePlayList({
-        playListId: item.id,
+      uiActions.addNotification({
+        type: 'success',
+        message: '已複製連結',
       })
     );
-  }
+  };
+
+  const deleteHandler = () => {
+    dispatch(
+      deletePlayList(item.id)
+    );
+    setWarningModalActive(false);
+  };
 
   const editHandler = () => {
     setModalActive(true);
-    setActionMenuActive(false)
-  }
+    setActionMenuActive(false);
+  };
   
   const addShowHandler = () => {
     setAddShowModalActive(true);
-    setActionMenuActive(false)
-  }
-
-  const clickItemHandler = (e) => {
-    navigate(`/playListDetail/${item.id}`)
-  }
+    setActionMenuActive(false);
+  };
 
   return (
     <Fragment>
       <li className={classes.item}>
         <div className={classes.cover}>
-          {/* {
-            // fix me 再想想要顯示什麼圖片或效果
-            item.showIdList[0] && <img src={item.showIdList[0].imgUrl} alt="show img" />
-          } */}
-          {/* <div className={classes.mask} /> */}
-          <i className="fa-solid fa-film" />
+          { itemImg && <img src={itemImg} alt="show" /> }
+          { !itemImg && <i className="fa-solid fa-film" /> }
+          <div className={classes.mask} />
         </div>
-        {/* fix me 處理過長字 */}
-        <h3 onClick={clickItemHandler}>{item.title}</h3>
+        <h4>
+          <NavLink to={`/playListDetail/${item.id}`}>
+            {item.title}
+          </NavLink>
+        </h4>
         <div className={classes.actionMenu}>
           {
             actionMenuActive && <span className={classes.menu}>
               <Button
                 icon="fa-solid fa-arrow-up-from-bracket"
                 className={classes.button}
-                // fix me 分享片單功能
-                onClick={() => setActionMenuActive(true)}
+                onClick={shareHandler}
               />
               <Button
                 icon="fa-solid fa-trash-can"
                 className={classes.button}
-                onClick={deletePlayList}
+                onClick={() => setWarningModalActive(true)}
               />
               <Button
                 icon="fa-solid fa-pen"
@@ -78,11 +94,13 @@ const PlayList = (props) => {
               />
             </span>
           }
-          <Button
-            icon="fa-solid fa-ellipsis"
-            className={classes.button}
-            onClick={() => setActionMenuActive(active => !active)}
-          />
+          <div className={classes.action}>
+            <Button
+              icon="fa-solid fa-ellipsis"
+              className={classes.button}
+              onClick={() => setActionMenuActive(active => !active)}
+            />
+          </div>
         </div>
       </li>
       {
@@ -99,6 +117,16 @@ const PlayList = (props) => {
             item={item}
             onClose={() => setModalActive(false)}
           />
+      }
+      {
+        warningModalActive &&
+          <Modal
+            hasAction={true}
+            onClose={() => setWarningModalActive(false)}
+            onConfirm={deleteHandler}
+          >
+            <p>確定要刪除片單嗎？</p>
+          </Modal>
       }
     </Fragment>
   );

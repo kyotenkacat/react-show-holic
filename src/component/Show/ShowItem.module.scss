@@ -2,17 +2,19 @@
 
 .item {
   position: relative;
-  height: 360px;
   cursor: pointer;
   margin: 1%;
   @include rwdmax($pad) {
     width: 48%;
+    height: 240px;
   }
-  @include rwd($pad, $laptop) {
+  @include rwd($pad + 1, $laptop - 1) {
     width: 31.333%;
+    height: 360px;
   }
   @include rwdmin($laptop) {
     width: 23%;
+    height: 380px;
   }
 }
 .cover {
@@ -28,6 +30,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 0 20%;
   }
   .mask {
     width: 100%;
@@ -45,22 +48,23 @@
   text-align: right;
   h3, p {
     margin: 0;
-    color: #ffffff;
-    line-height: 1.4;
-  }
-  h3 {
-    font-size: 24px;
-  }
-  p {
-    font-size: 16px;
+    color: $white;
   }
   .originalTitle {
-    color: #aaaaaa;
+    color: $lightGray;
   }
   .rating {
     color: $yellow;
-    font-size: 26px;
     font-weight: bold;
+    @include rwdmax($mobile) {
+      font-size: 22px;
+    }
+    @include rwd($mobile + 1, $laptop - 1) {
+      font-size: 24px;
+    }
+    @include rwdmin($laptop) {
+      font-size: 26px;
+    }
   }
 }
 .favoriteIcon {

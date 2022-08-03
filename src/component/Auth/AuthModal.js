@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   authActions, signInAsGuest, signInByGoogle,
@@ -15,23 +15,23 @@ const AuthModal = (props) => {
   const user = useSelector((state) => state.auth.user);
   const isGuest = user && user.isAnonymous;
   const [page, setPage] = useState('all');
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
+  const [hintTextActive, setHintTextActive] = useState(false);
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
-
 
   const closeHandler = () => {
     dispatch(
       authActions.setModalActive(false)
     );
-  }
+  };
 
   const guestHandler = () => {
     dispatch(
       signInAsGuest(closeHandler)
     );
-  }
+  };
   
   const googleHandler = () => {
     if (isGuest) {
@@ -43,7 +43,7 @@ const AuthModal = (props) => {
         signInByGoogle(closeHandler)
       );
     }
-  }
+  };
 
   const signUpHandler = (e) => {
     e.preventDefault();
@@ -59,26 +59,26 @@ const AuthModal = (props) => {
         signUpByEmail(emailRef.current.value, passwordRef.current.value, closeHandler)
       );
     }
-  }
+  };
 
   const signInHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     dispatch(
       signInByEmail(emailRef.current.value, passwordRef.current.value, closeHandler)
     );
-  }
+  };
 
   return (
     <Modal onClose={closeHandler} className={classes.authModal}>
       {
         page === 'all' && isGuest &&
           <section>
-            <p>註冊正式帳號以編輯個人資料</p>
+            <p>註冊正式帳號以編輯個人資料或新增自選片單</p>
             <p>
               <Button
                 icon="fa-brands fa-google"
                 text="Google 註冊"
-                className={classes.button}
+                className="primary"
                 onClick={googleHandler}
               />
             </p>
@@ -86,7 +86,7 @@ const AuthModal = (props) => {
               <Button
                 icon="fa-solid fa-envelope"
                 text="Email 註冊"
-                className={classes.button}
+                className="primary"
                 onClick={() => setPage('signUp')}
               />
             </p>
@@ -95,12 +95,12 @@ const AuthModal = (props) => {
       {
         page === 'all' && !isGuest &&
           <section>
-            <p>登入以使用收藏與更多功能</p>
+            <p>登入 / 註冊以使用更多功能</p>
             <p>
               <Button
                 icon="fa-solid fa-id-card-clip"
                 text="使用訪客模式"
-                className={classes.button}
+                className="primary"
                 onClick={guestHandler}
               />
             </p>
@@ -108,7 +108,7 @@ const AuthModal = (props) => {
               <Button
                 icon="fa-brands fa-google"
                 text="Google 登入 / 註冊"
-                className={classes.button}
+                className="primary"
                 onClick={googleHandler}
               />
             </p>
@@ -116,7 +116,7 @@ const AuthModal = (props) => {
               <Button
                 icon="fa-solid fa-envelope"
                 text="Email 登入 / 註冊"
-                className={classes.button}
+                className="primary"
                 onClick={() => setPage('signIn')}
               />
             </p>
@@ -165,11 +165,8 @@ const AuthModal = (props) => {
                 type="submit"
                 className="primary"
               />
-              <p>還沒有帳號？
-                <span
-                  className={classes.link}
-                  onClick={() => setPage('signUp')}
-                >
+              <p className={classes.link}>還沒有帳號？
+                <span onClick={() => setPage('signUp')}>
                   註冊
                 </span>
               </p>
@@ -179,7 +176,16 @@ const AuthModal = (props) => {
       {
         page === 'signUp' &&
           <section>
-            <h3>註冊</h3>
+            <h3 style={{ position: 'relative' }}>註冊
+                <i
+                className={`fa-solid fa-circle-info ${classes.hint}`}
+                onClick={() => setHintTextActive(prevState => !prevState)}
+              />
+              {
+                hintTextActive &&
+                  <span className={classes.hintText}>此網站僅為展示之用，因此不會寄發註冊驗證信，Email只需符合格式即可</span>
+              }
+            </h3>
             <form
               name='signUpForm'
               className={classes.form}
@@ -226,11 +232,8 @@ const AuthModal = (props) => {
               />
               {
                 !isGuest &&
-                  <p>已經有帳號了？
-                    <span
-                      className={classes.link}
-                      onClick={() => setPage('signIn')}
-                    >
+                  <p className={classes.link}>已經有帳號了？
+                    <span onClick={() => setPage('signIn')}>
                       登入
                     </span>
                   </p>
@@ -239,7 +242,7 @@ const AuthModal = (props) => {
           </section>
       }
     </Modal>
-  )
+  );
 };
 
 export default AuthModal;

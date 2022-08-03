@@ -3,22 +3,27 @@
 .notification {
   padding: 10px 20px;
   border-radius: 8px 0 0 8px;
-  font-size: 20px;
-  background-color: $yellow;
+  background: $yellow;
   margin-bottom: 10px;
+  color: $deepGray;
   &:not(.disappearing) {
     animation: appear 1s ease-out forwards;
   }
   &.disappearing {
     animation: disappear 1s ease-out forwards;
   }
-  p {
-    margin: 0;
-    color: $deepGray
+  @include rwdmax($laptop - 1) {
+    font-size: 14px;
   }
-}
-.error {
-  color: $red;
+  @include rwdmin($laptop) {
+    font-size: 16px;
+  }
+  &.error {
+    color: $red;
+  }
+  span {
+    margin-left: 6px;
+  }
 }
 
 @keyframes appear {

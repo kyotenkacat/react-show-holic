@@ -3,21 +3,43 @@
 .authModal {
   width: 300px;
   text-align: center;
+  p {
+    button {
+      width: 80%;
+    }
+  }
 }
-.button {
-  width: 100%;
-  color: #fff;
-  padding: 8px 10px;
-  &:hover {
-    color: $red;
-    border-color: $yellow;
-    background: $yellow;
+.hint {
+  cursor: pointer;
+  position: absolute;
+  font-size: 16px;
+  transform: translateX(4px);
+}
+.hintText {
+  display: block;
+  background: $white;
+  color: $deepGray;
+  padding: 6px;
+  border-radius: 12px;
+  position: absolute;
+  top: 100%;
+  margin-top: 6px;
+  font-weight: normal;
+  &:before {
+    position: absolute;
+    content: "";
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid $white;
+    left: 50%;
+    top: -7px;
+    transform: translateX(-8px);
   }
 }
 .back {
   text-align: left;
   cursor: pointer;
-  &:hover {
+  @include hover {
     color: $yellow;
   }
 }
@@ -34,17 +56,32 @@
     width: 100%;
     padding: 6px;
     border-radius: 12px;
-    background: #aaaaaa;
+    background: $lightGray;
+    border: 2px solid transparent;
     &:focus {
-      outline: 1px solid $yellow;
+      outline: none;
+      border-color: $yellow;
     }
   }
   .error {
     color: $red;
   }
   .link {
-    text-decoration: underline;
-    color: $yellow;
-    cursor: pointer;
+    margin-top: 20px;
+    span {
+      text-decoration: underline;
+      color: $yellow;
+      display: inline-block;
+      cursor: pointer;
+      @include rwdmax($mobile) {
+        font-size: 14px;
+      }
+      @include rwd($mobile + 1, $laptop - 1) {
+        font-size: 16px;
+      }
+      @include rwdmin($laptop) {
+        font-size: 18px;
+      }
+    }
   }
 }

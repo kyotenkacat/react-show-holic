@@ -1,23 +1,23 @@
 import { Fragment, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { indexOf } from 'lodash';
 import ShowModal from 'component/Show/ShowModal';
-import Favorite from 'component/Favorite/Favorite';
+import Favorite from 'component/Show/Favorite';
 import classes from './ShowItem.module.scss';
 
 const ShowItem = (props) => {
   const [modalActive, setModalActive] = useState(null);
-  const { show } = props;
+  const { show, type } = props;
 
-  const favItems = useSelector((state) => state.favorite.itemList);
-  const match = favItems.find((item) => item.showId === show.id);
-  const isFav = !!match;
+  const favList = useSelector((state) => state.favorite.itemList);
+  const isFav = indexOf(favList, show.id) !== -1;
 
   const openModal = (e) => {
     const className = e.target.className;
     if (!className.includes('heart') && !className.includes('favoriteIcon')) {
-      setModalActive(true)
+      setModalActive(true);
     }
-  }
+  };
 
   return (
     <Fragment>
@@ -30,8 +30,7 @@ const ShowItem = (props) => {
           <h3>{show.title}</h3>
           <p className={classes.originalTitle}>{show.originalTitle}</p>
           <p className={classes.rating}>
-            {/* fix me 處理rating 是整數的情況 */}
-            {show.rating || '-'}
+            { show.rating ? show.rating.toFixed(1) : '-' }
           </p>
         </div>
         <Favorite showId={show.id} isFav={isFav} className={classes.favoriteIcon} />
@@ -41,6 +40,7 @@ const ShowItem = (props) => {
           <ShowModal
             show={show}
             isFav={isFav}
+            type={type}
             onClose={() => setModalActive(false)}
           />
       }

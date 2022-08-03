@@ -2,34 +2,16 @@
 
 .playModal {
   text-align: center;
-  width: 60%;
-  max-width: 500px;
   @include rwdmax($mobile) {
-    width: 80%;
-    min-width: 320px;
+    width: 320px;
   }
-  // width: 80%;
-  // max-width: 600px;
-  // @include rwdmax($mobile) {
-  //   width: 90%;
-  //   min-width: 320px;
-  // }
+  @include rwdmin($mobile + 1) {
+    width: 60%;
+    max-width: 500px;
+  }
 }
 .form {
   .title {
-    font-size: 20px;
     margin-bottom: 10px;
-  }
-  textarea {
-    width: 80%;
-    // margin: auto;
-  }
-}
-.action {
-  margin: 20px 0 auto;
-  button {
-    &:first-child {
-      margin-right: 30px;
-    }
   }
 }

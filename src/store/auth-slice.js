@@ -3,15 +3,13 @@ import {
   signOut, signInAnonymously, signInWithPopup,
   GoogleAuthProvider, createUserWithEmailAndPassword,
   signInWithEmailAndPassword, deleteUser, EmailAuthProvider,
-  linkWithCredential, linkWithPopup, updateProfile,
-} from 'firebase/auth'
+  linkWithCredential, linkWithPopup,
+} from 'firebase/auth';
 import { auth, database } from 'util/firebase';
-import { ref, onValue, query, orderByChild, equalTo,
-  push, set, update, remove } from 'firebase/database';
+import { ref, onValue, remove, set } from 'firebase/database';
 import { uiActions } from 'store/ui-slice';
 import { favoriteActions } from 'store/favorite-slice';
 import { playListActions } from 'store/playList-slice';
-import { forEach } from 'lodash';
 
 const authSlice = createSlice({
   name: 'auth',
@@ -19,17 +17,20 @@ const authSlice = createSlice({
     authLoading: true,
     user: null,
     modalActive: false,
+    userInfoList: {},
   },
   reducers: {
     setAuthLoading(state, action) {
       state.authLoading = action.payload;
     },
     setUser(state, action) {
-      console.log('action.payload:', action.payload)
       state.user = action.payload.user;
     },
     setModalActive(state, action) {
       state.modalActive = action.payload;
+    },
+    setUserInfoList(state, action) {
+      state.userInfoList = action.payload;
     },
   },
 });
@@ -68,17 +69,15 @@ export const signOutUser = (successCallback) => {
         }
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
         dispatch(
           uiActions.addNotification({
             type: 'error',
-            message: errorMessage,
+            errorCode: error.code,
           })
         );
       });
   };
-}
+};
 
 export const signInAsGuest = (successCallback) => {
   return async (dispatch) => {
@@ -104,18 +103,15 @@ export const signInAsGuest = (successCallback) => {
         }
       })
       .catch((error) => {
-        // fix me 統一處理errorCode翻譯對應
-        const errorCode = error.code;
-        const errorMessage = error.message;
         dispatch(
           uiActions.addNotification({
             type: 'error',
-            message: errorMessage,
+            errorCode: error.code,
           })
         );
       });
   };
-}
+};
 
 export const signInByGoogle = (successCallback) => {
   return async (dispatch) => {
@@ -142,17 +138,15 @@ export const signInByGoogle = (successCallback) => {
         }
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
         dispatch(
           uiActions.addNotification({
             type: 'error',
-            message: errorMessage,
+            errorCode: error.code,
           })
         );
       });
   };
-}
+};
 
 export const signUpByEmail = (email, password, successCallback) => {
   return async (dispatch) => {
@@ -178,17 +172,15 @@ export const signUpByEmail = (email, password, successCallback) => {
         }
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
         dispatch(
           uiActions.addNotification({
             type: 'error',
-            message: errorMessage,
+            errorCode: error.code,
           })
         );
       });
   };
-}
+};
 
 export const signInByEmail = (email, password, successCallback) => {
   return async (dispatch) => {
@@ -203,7 +195,6 @@ export const signInByEmail = (email, password, successCallback) => {
         );
       })
       .then((response) => {
-        console.log('response:', response)
         dispatch(
           uiActions.addNotification({
             type: 'success',
@@ -215,20 +206,15 @@ export const signInByEmail = (email, password, successCallback) => {
         }
       })
       .catch((error) => {
-        const errorCode = error.code;
-        // errorCode: auth/user-not-found
-        const errorMessage = error.message;
-        // errorMessage: Firebase: Error (auth/user-not-found).
-
         dispatch(
           uiActions.addNotification({
             type: 'error',
-            message: errorMessage,
+            errorCode: error.code,
           })
         );
       });
   };
-}
+};
 
 export const deleteGuest = (successCallback) => {
   return async (dispatch) => {
@@ -236,58 +222,41 @@ export const deleteGuest = (successCallback) => {
       uiActions.setLoading(true)
     );
 
-    // // fix me 確認片單資料要怎麼刪
-    // const updates = {
-    //   [`/favoriteList/${auth.currentUser.uid}`]: null,
-    //   // [`/playList/${auth.currentUser.uid}`]: null,
-    // };
-    // update(ref(database), updates);
-
-
-    onValue(query(ref(database, `/playList`), orderByChild('ownerUid'), equalTo(auth.currentUser.uid)),
-      (snapshot) => {
-        snapshot.forEach((deedSnapshot) =>{
-          console.log('deedSnapshot:', deedSnapshot)
-          remove(deedSnapshot.ref);
-        })
-      },
-      (error)=> {
-        console.log('error:', error)
-      }
-    );
-
-    // deleteUser(auth.currentUser)
-    //   .finally(() => {
-    //     dispatch(
-    //       uiActions.setLoading(false)
-    //     );
-    //   })
-    //   .then(() => {
-    //     dispatch(
-    //       uiActions.addNotification({
-    //         type: 'success',
-    //         message: '已登出',
-    //       })
-    //     );
-    //     if (successCallback) {
-    //       successCallback();
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     const errorCode = error.code;
-    //     // errorCode: auth/user-not-found
-    //     const errorMessage = error.message;
-    //     // errorMessage: Firebase: Error (auth/user-not-found).
-
-    //     dispatch(
-    //       uiActions.addNotification({
-    //         type: 'error',
-    //         message: errorMessage,
-    //       })
-    //     );
-    //   });
+    deleteUser(auth.currentUser)
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
+        );
+      })
+      .then(() => {
+        dispatch(
+          favoriteActions.setItemList([])
+        );
+        dispatch(
+          playListActions.setItemList([])
+        );
+        dispatch(
+          uiActions.addNotification({
+            type: 'success',
+            message: '已登出',
+          })
+        );
+        if (successCallback) {
+          successCallback();
+        }
+      })
+      .catch((error) => {
+        dispatch(
+          uiActions.addNotification({
+            type: 'error',
+            message: error.code,
+          })
+        );
+      });
+    remove(ref(database, `/userList/${auth.currentUser.uid}`));
+    remove(ref(database, `/favoriteList/${auth.currentUser.uid}`));
   };
-}
+};
 
 export const linkGuestToGoogle = (successCallback) => {
   return async (dispatch) => {
@@ -296,7 +265,6 @@ export const linkGuestToGoogle = (successCallback) => {
     );
 
     const provider = new GoogleAuthProvider();
-
     linkWithPopup(auth.currentUser, provider)
       .finally(() => {
         dispatch(
@@ -325,17 +293,15 @@ export const linkGuestToGoogle = (successCallback) => {
           successCallback();
         }
       }).catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
         dispatch(
           uiActions.addNotification({
             type: 'error',
-            message: errorMessage,
+            message: error.code,
           })
         );
       });
   };
-}
+};
 
 export const linkGuestToEmail = (email, password, successCallback) => {
   return async (dispatch) => {
@@ -344,7 +310,6 @@ export const linkGuestToEmail = (email, password, successCallback) => {
     );
 
     const credential = EmailAuthProvider.credential(email, password);
-
     linkWithCredential(auth.currentUser, credential)
       .finally(() => {
         dispatch(
@@ -373,70 +338,67 @@ export const linkGuestToEmail = (email, password, successCallback) => {
           successCallback();
         }
       }).catch((error) => {
-        console.log("Account linking error", error);
-        const errorCode = error.code;
-        // errorCode: auth/user-not-found
-        const errorMessage = error.message;
-        // errorMessage: Firebase: Error (auth/user-not-found).
-
         dispatch(
           uiActions.addNotification({
             type: 'error',
-            message: errorMessage,
+            message: error.code,
           })
         );
       });
   };
-}
+};
 
-export const updateUser = (displayName, photoURL, successCallback) => {
+export const updateUser = (name, avatar, successCallback) => {
   return async (dispatch) => {
     dispatch(
       uiActions.setLoading(true)
     );
 
-    const data = { displayName, photoURL };
-    const user = auth.currentUser;
-
-    updateProfile(user, data)
+    const data = { name, avatar };
+    set(ref(database, `/userList/${auth.currentUser.uid}`), data)
       .finally(() => {
         dispatch(
           uiActions.setLoading(false)
         );
       })
       .then(() => {
-        dispatch(
-          authActions.setUser({
-            user: {
-              isAnonymous: user.isAnonymous,
-              displayName: user.displayName,
-              photoURL: user.photoURL,
-              uid: user.uid,
-            }
-          })
-        );
+        dispatch(getUserInfoList());
         dispatch(
           uiActions.addNotification({
             type: 'success',
-            message: '已修改個人資料',
+            message: '已儲存',
           })
         );
         if (successCallback) {
           successCallback();
         }
       }).catch((error) => {
-        console.log("Account linking error", error);
-        const errorCode = error.code;
-        // errorCode: auth/user-not-found
-        const errorMessage = error.message;
-        // errorMessage: Firebase: Error (auth/user-not-found).
-
         dispatch(
           uiActions.addNotification({
             type: 'error',
-            message: errorMessage,
+            message: error.code,
           })
         );
       });
   };
-}
+};
+
+export const getUserInfoList = () => {
+  return async (dispatch) => {
+    onValue(ref(database, '/userList'),
+      (snapshot) => {
+        dispatch(
+          authActions.setUserInfoList(snapshot.val())
+        );
+      },
+      ()=> {
+        dispatch(
+          uiActions.addNotification({
+            type: 'error',
+          })
+        );
+      },
+      { onlyOnce: true },
+    );
+  };
+};

@@ -8,7 +8,7 @@ const Button = (props) => {
     if (props.onClick) {
       props.onClick(e);
     }
-  }
+  };
 
   return (
     <button

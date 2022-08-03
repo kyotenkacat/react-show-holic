@@ -1,19 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { errorCode } from 'asset/errorCode';
 
 const uiSlice = createSlice({
   name: 'ui',
   initialState: {
     loading: false,
-    notificationList: []
+    notificationList: [],
   },
   reducers: {
     setLoading(state, action) {
       state.loading = action.payload;
     },
     addNotification(state, action) {
+      let message = action.payload.message;
+      if (action.payload.type === 'error') {
+        message = errorCode[action.payload.errorCode] || '發生錯誤，請稍候再重試';
+      }
       state.notificationList.push({
         id: Date.now(),
-        ...action.payload,
+        type: action.payload.type,
+        message,
       });
     },
     removeNotification(state, action) {

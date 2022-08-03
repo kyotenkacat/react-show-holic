@@ -1,11 +1,18 @@
 @import 'style/variables.scss';
 
 .showModal {
-  width: 80%;
-  max-width: 600px;
+  padding: 30px 20px;
   @include rwdmax($mobile) {
     width: 90%;
     min-width: 320px;
+  }
+  @include rwd($mobile + 1, $laptop - 1) {
+    width: 80%;
+    max-width: 600px;
+  }
+  @include rwdmin($laptop) {
+    width: 80%;
+    max-width: 960px;
   }
 }
 .info {
@@ -15,20 +22,23 @@
   vertical-align: top;
   h3, p {
     margin: 0;
-    line-height: 1.6;
-  }
-  h3 {
-    font-size: 24px;
   }
   .originalTitle, span {
-    color: #aaaaaa;
-    font-size: 16px;
+    color: $lightGray;
   }
   .rating {
     color: $yellow;
-    font-size: 26px;
-    font-weight: bold;
     margin-bottom: 20px;
+    font-weight: bold;
+    @include rwdmax($mobile) {
+      font-size: 22px;
+    }
+    @include rwd($mobile + 1, $laptop - 1) {
+      font-size: 24px;
+    }
+    @include rwdmin($laptop) {
+      font-size: 26px;
+    }
   }
 }
 .imgContainer {
@@ -44,5 +54,89 @@
     position: absolute;
     left: 6px;
     top: 6px;
+  }
+}
+.reviewList {
+  margin-top: 20px;
+  p {
+    span {
+      color: $yellow;
+    }
+  }
+}
+.review {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1% 5%;
+  margin-bottom: 20px;
+  .userName {
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+  .avatar {
+    width: 30px;
+    vertical-align: middle;
+  }
+  .rating {
+    i {
+      color: $lightGray;
+      margin: 0 2px;
+      @include rwdmax($mobile) {
+        font-size: 14px;
+      }
+      @include rwd($mobile + 1, $laptop - 1) {
+        font-size: 16px;
+      }
+      @include rwdmin($laptop) {
+        font-size: 18px;
+      }
+      &.active {
+        color: $red;
+      }
+    }
+  }
+}
+.empty {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  text-align: center;
+  @include rwdmax($mobile) {
+    padding: 5%;
+  }
+  @include rwd($mobile + 1, $laptop - 1) {
+    padding: 1%;
+  }
+  @include rwdmin($laptop) {
+    padding: 5%;
+  }
+  i {
+    display: block;
+    margin-bottom: 10px;
+    @include rwdmax($mobile) {
+      font-size: 26px;
+    }
+    @include rwd($mobile + 1, $laptop - 1) {
+      font-size: 28px;
+    }
+    @include rwdmin($laptop) {
+      font-size: 30px;
+    }
+  }
+}
+
+@include rwdmin($laptop) {
+  .show {
+    display: inline-block;
+    vertical-align: top;
+    width: 70%;
+  }
+  .reviewList {
+    display: inline-block;
+    vertical-align: top;
+    width: 28%;
+    margin-left: 2%;
+    margin-top: 0;
+    max-height: calc(96vh - 60px);
+    overflow: auto;
   }
 }

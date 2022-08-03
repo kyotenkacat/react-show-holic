@@ -1,70 +1,34 @@
-# Getting Started with Create React App
+<img src="src/asset/img/logo.png" width="320" alt="Show Holic Logo">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# [**Show Holic - 影劇評價情報站**](https://react-screen-holic.web.app/)
 
-## Available Scripts
+模擬提供電影、影集資訊及評價功能的網站
 
-In the project directory, you can run:
+## **Keyword**
+- React
+- Redux
+- React-router
+- Firebase
+- Sass
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## **網站功能**
+- **影劇情報**
+  - 瀏覽影片上映日期、平台等相關資訊
+  - 可根據影片類型、平台等相關資訊做搜尋與排序
+- **使用者驗證**
+  - 可使用訪客模式、Gmail、Email搭配密碼三種登入/註冊方式
+  - 訪客帳號可再轉換為Gmail或Email搭配密碼的正式帳號
+- **收藏**
+  - 登入後可將影片加入自己的收藏
+- **評價**
+  - 登入後可針對影片留下評分與文字評價
+  - 可瀏覽其他使用者的評價
+- **個人頻道**
+  - 登入後可瀏覽此頁面
+  - 正式帳號可修改顯示頭像與名稱
+  - 可瀏覽自選片單及收藏清單
+- **自選片單**
+  - 正式帳號可新增自選片單，自訂名稱與描述
+  - 片單可再使用加入影片、修改、刪除、分享的功能
+  - 將影片加入片單時，也可使用搜尋功能
+  - 分享後會複製連結，[連結](https://react-screen-holic.web.app/playListDetail/-N6NTKUsOvFJ_bHyywh0)可直接查看片單描述與影片內容

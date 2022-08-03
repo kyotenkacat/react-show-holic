@@ -43,7 +43,7 @@ const SORT_OPTIONS = [
   { name: '最負評', field: 'rating', order: 'asc' },
   { name: '最新', field: 'publishedDate', order: 'desc' },
   { name: '最舊', field: 'publishedDate', order: 'asc' },
-]
+];
 
 const INITIAL_STATE = {
   filter: {
@@ -81,7 +81,6 @@ const Filter = (props) => {
   };
 
   const { data, onFilter } = props;
-
   useEffect(() => {
     const { filter, sort } = condition;
     const cloneData = cloneDeep(data);
@@ -92,11 +91,11 @@ const Filter = (props) => {
         const keyword = lowerCase(trim(filter.keyword));
         match = lowerCase(show.title).includes(keyword) ||
           lowerCase(show.originalTitle).includes(keyword) ||
-          lowerCase(show.description).includes(keyword)
+          lowerCase(show.description).includes(keyword);
       }
 
       if (match && filter.year) {
-        match = show.publishedDate.includes(filter.year)
+        match = show.publishedDate.includes(filter.year);
       }
 
       if (match && filter.type) {
@@ -108,7 +107,7 @@ const Filter = (props) => {
       }
 
       return match;
-    })
+    });
 
     filteredData = orderBy(filteredData, sort.field, sort.order);
     
@@ -124,80 +123,87 @@ const Filter = (props) => {
         active: !condition.filter[item],
       })}
       onClick={() => handler(null)}
-    />
-  }
+    />;
+  };
 
   return (
     <section className={classes.filter}>
-      <p>
+      <div className={classes.row}>
         <span className={classes.title}>類型</span>
-        {allButton('type', typeHandler)}
-        {
-          map(constant.type, (item, key) => 
-            <Button
-              key={key}
-              text={item}
-              className={cx({
-                button: true,
-                active: Number(key) === condition.filter.type,
-              })}
-              onClick={() => typeHandler(Number(key))}
-            />
-          )
-        }
-      </p>
-      <p>
+        <p className={classes.buttonGroup}>
+          { allButton('type', typeHandler) }
+          {
+            map(constant.type, (item, key) => 
+              <Button
+                key={key}
+                text={item}
+                className={cx({
+                  button: true,
+                  active: Number(key) === condition.filter.type,
+                })}
+                onClick={() => typeHandler(Number(key))}
+              />
+            )
+          }
+        </p>
+      </div>
+      <div className={classes.row}>
         <span className={classes.title}>平台</span>
-        {allButton('platform', platformHandler)}
-        {
-          map(constant.platform, (item, key) => 
-            <Button
-              key={key}
-              text={item}
-              className={cx({
-                button: true,
-                active: Number(key) === condition.filter.platform,
-              })}
-              onClick={() => platformHandler(Number(key))}
-            />
-          )
-        }
-      </p>
-      <p>
+        <p className={classes.buttonGroup}>
+          { allButton('platform', platformHandler) }
+          {
+            map(constant.platform, (item, key) => 
+              <Button
+                key={key}
+                text={item}
+                className={cx({
+                  button: true,
+                  active: Number(key) === condition.filter.platform,
+                })}
+                onClick={() => platformHandler(Number(key))}
+              />
+            )
+          }
+        </p>
+      </div>
+      <div className={classes.row}>
         <span className={classes.title}>年份</span>
-        {allButton('year', yearHandler)}
-        {
-          // fix me, 更舊的年份如何處理
-          map([2022, 2021, 2020, 2019], item =>
-            <Button
-              key={item}
-              text={item}
-              className={cx({
-                button: true,
-                active: item === condition.filter.year,
-              })}
-              onClick={() => yearHandler(item)}
-            />
-          )
-        }
-      </p>
-      <p>
+        <p className={classes.buttonGroup}>
+          { allButton('year', yearHandler) }
+          {
+            map([2022, 2021, 2020, 2019, 2018], item =>
+              <Button
+                key={item}
+                text={item}
+                className={cx({
+                  button: true,
+                  active: item === condition.filter.year,
+                })}
+                onClick={() => yearHandler(item)}
+              />
+            )
+          }
+        </p>
+      </div>
+      <div className={classes.row}>
         <span className={classes.title}>排序</span>
-        {
-          map(SORT_OPTIONS, item =>
-            <Button
-              key={item.name}
-              text={item.name}
-              className={cx({
-                button: true,
-                active: item.field === condition.sort.field && item.order === condition.sort.order,
-              })}
-              onClick={() => sortHandler(item)}
-            />
-          )
-        }
-      </p>
-      <p className={classes.search}>
+        <p className={classes.buttonGroup}>
+          {
+            map(SORT_OPTIONS, item =>
+              <Button
+                key={item.name}
+                text={item.name}
+                className={cx({
+                  button: true,
+                  active: item.field === condition.sort.field && item.order === condition.sort.order,
+                })}
+                onClick={() => sortHandler(item)}
+              />
+            )
+          }
+        </p>
+      </div>
+      <div className={classes.search}>
         <span className={classes.title}>搜尋</span>
         <input
           type="text"
@@ -207,13 +213,12 @@ const Filter = (props) => {
           spellCheck="false"
           ref={keywordRef}
         />
-        {/* fix me 按enter時也觸發搜尋 */}
         <Button
           icon='fa-solid fa-magnifying-glass'
           className={classes.button}
           onClick={() => keywordHandler(null)}
         />
-      </p>
+      </div>
     </section>
   );
 };

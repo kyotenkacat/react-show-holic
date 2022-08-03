@@ -7,30 +7,26 @@
   }
 }
 .item {
-  height: 120px;
   margin: 1%;
   background: $deepGray;
   border-radius: 12px;
   text-align: center;
-  line-height: 120px;
   @include rwdmax($pad) {
-    width: 98%;
+    width: 48%;
+    height: 120px;
+    line-height: 120px;
   }
-  @include rwd($pad, $laptop) {
+  @include rwd($pad + 1, $laptop - 1) {
     width: 31.333%;
+    height: 120px;
+    line-height: 120px;
   }
   @include rwdmin($laptop) {
     width: 23%;
+    height: 140px;
+    line-height: 140px;
   }
-  .button {
-    color: $yellow;
-    border-color: $yellow;
-    font-size: 18px;
-  }
-  &:hover {
-    .button:not([disabled]) {
-      background: $yellow;
-      color: $red;
-    }
+  @include hover {
+    color: $red;
   }
 }

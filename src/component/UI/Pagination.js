@@ -15,17 +15,15 @@ const Pagination = (props) => {
 
   const directionHandler = (value) => {
     setCurrentPage(prevState => prevState + value);
-  }
+  };
 
   useEffect(() => {
     const currentPageData = data.slice(
       (currentPage - 1) * pageSize,
       (currentPage - 1) * pageSize + pageSize
     );
-    
     onPageChange(currentPageData);
-
-  }, [currentPage, data, onPageChange]);
+  }, [data, currentPage, pageSize, onPageChange]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -70,7 +68,7 @@ const Pagination = (props) => {
         </li>
       </ul>
     </section>
-  )
-}
+  );
+};
 
 export default Pagination;

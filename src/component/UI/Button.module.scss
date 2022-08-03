@@ -3,11 +3,23 @@
 .button {
   background: none;
   cursor: pointer;
-  font-size: 20px;
-  color: #ffffff;
-  border: 1px solid #ffffff;
-  padding: 6px 10px;
-  border-radius: 12px;
+  color: $white;
+  border: 1px solid $white;
+  @include rwdmax($mobile) {
+    font-size: 14px;
+    padding: 6px 10px;
+    border-radius: 8px;
+  }
+  @include rwd($mobile + 1, $laptop - 1) {
+    font-size: 14px;
+    padding: 6px 10px;
+    border-radius: 10px;
+  }
+  @include rwdmin($laptop) {
+    font-size: 16px;
+    padding: 8px 10px;
+    border-radius: 12px;
+  }
   i + span {
     margin-left: 6px;
   }
@@ -18,15 +30,15 @@
 }
 .primary {
   border-color: $yellow;
-  background-color: $yellow;
+  background: $yellow;
   color: $deepGray;
-  &:hover {
+  @include hover {
     color: $red;
   }
 }
 .cancel {
-  &:hover {
+  @include hover {
     color: $deepGray;
-    background: #ffffff;
+    background: $white;
   }
 }

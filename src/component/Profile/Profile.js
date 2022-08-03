@@ -1,37 +1,41 @@
 import { Fragment, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { map, filter } from 'lodash';
+import { filter } from 'lodash';
 import { authActions, signOutUser, deleteGuest } from 'store/auth-slice';
 import { getPlayList } from 'store/playList-slice';
 import ShowItem from 'component/Show/ShowItem';
 import Button from 'component/UI/Button';
 import PlayList from 'component/PlayList/PlayList';
 import EditModal from 'component/Profile/EditModal';
+import Modal from 'component/UI/Modal';
 import classes from './Profile.module.scss';
 
 const Profile = () => {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
+  const userInfoList = useSelector((state) => state.auth.userInfoList);
   const authLoading = useSelector((state) => state.auth.authLoading);
   const favList = useSelector((state) => state.favorite.itemList);
   const showList = useSelector((state) => state.show.itemList);
-  const favShowIdList = map(favList, 'showId');
-  const favShowList = filter(showList, item => favShowIdList.includes(item.id));
-  const favRateList = filter(favList, item => item.favRating !== 0);
+  const favShowList = filter(showList, item => favList.includes(item.id));
   const playList = useSelector((state) => state.playList.itemList);
+  const [userInfo, setUserInfo] = useState({ name: ' ', avatar: 0 });
   const [editModalActive, setEditModalActive] = useState(false);
+  const [warningModalActive, setWarningModalActive] = useState(false);
 
   useEffect(() => {
     if (!authLoading && user) {
       dispatch(getPlayList());
+      if (userInfoList[user.uid]) {
+        setUserInfo(userInfoList[user.uid]);
+      }
     }
-  }, [authLoading, user, dispatch]);
+  }, [authLoading, user, dispatch, userInfoList]);
 
   if (authLoading) {
-    return <div />
+    return <div />;
   }
 
   if (!authLoading && !user) {
@@ -46,30 +50,35 @@ const Profile = () => {
     } else {
       setEditModalActive(true);
     }
-  }
+  };
   
   const signOut = () => {
     if (user.isAnonymous) {
-      // fix me 跳出warning警告資料會消失
-      dispatch(
-        deleteGuest(() => navigate('/'))
-      );
+      setWarningModalActive(true);
     } else {
       dispatch(
         signOutUser(() => navigate('/'))
       );
     }
-  }
+  };
+
+  const deleteUser = () => {
+    dispatch(
+      deleteGuest(() => navigate('/'))
+    );
+    setWarningModalActive(false);
+  };
 
   return (
     <Fragment>
       <section className={classes.profile}>
         <section className={classes.userSection}>
           <img
-            src={require(`asset/img/avatar${user.photoURL || 'Ghost'}.png`)}
+            src={require(`asset/img/avatar${userInfo.avatar}.png`)}
             alt="user avatar"
+            className={`avatar ${classes.avatar}`}
           />
-          <p>{ user.isAnonymous ? '訪客' : user.displayName || ' ' }</p>
+          <h4>{ user.isAnonymous ? '訪客' : userInfo.name }</h4>
           <Button
             icon="fa-solid fa-pen"
             className={classes.button}
@@ -82,52 +91,60 @@ const Profile = () => {
           />
           <div>
             <span className={classes.data}>
-              <span className={classes.number}>{favList.length}</span>
-              部收藏
-            </span>
-            <span className={classes.data}>
-              <span className={classes.number}>{favRateList.length}</span>
-              個評價
-            </span>
-            <span className={classes.data}>
               <span className={classes.number}>{playList.length}</span>
               個片單
             </span>
+            <span className={classes.data}>
+              <span className={classes.number}>{favList.length}</span>
+              部收藏
+            </span>
           </div>
         </section>
-        <PlayList favLength={favList.length} />
+        <PlayList />
         
         <section className={classes.favSection}>
           <h2>收藏清單</h2>
           {
             favList.length === 0 &&
               <div className="noData">
-                <p>目前無收藏...</p>
+                <p>目前無收藏</p>
                 <Link to="/">
                   <Button
                     icon="fa-solid fa-arrow-left"
                     text="瀏覽片單"
-                    className={classes.button}
+                    className="primary"
                   />
                 </Link>
               </div>
           }
           <ul>
-            {/* fix me 分頁？ */}
-            {favShowList.map((show) => (
-              <ShowItem
-                key={show.id}
-                show={show}
-              />
-            ))}
+            {
+              favShowList.map((show) => (
+                <ShowItem
+                  key={show.id}
+                  show={show}
+                />
+              ))
+            }
           </ul>
         </section>
       </section>
       {
         editModalActive &&
           <EditModal
+            userInfo={userInfo}
             onClose={() => setEditModalActive(false)}
           />
+      }
+      {
+        warningModalActive &&
+          <Modal
+            hasAction={true}
+            onClose={() => setWarningModalActive(false)}
+            onConfirm={deleteUser}
+          >
+            <p>在訪客模式下登出將會失去所有資料，確定要登出嗎？</p>
+          </Modal>
       }
     </Fragment>
   );

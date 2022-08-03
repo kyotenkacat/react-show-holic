@@ -1,10 +1,30 @@
+@import 'style/variables.scss';
+
 .playListDetail {
+  width: 90%;
+  margin: auto;
+  @include slideInAnimation(1s);
+}
+.info {
   text-align: center;
-  color: #ffffff;
   h2 {
-    font-size: 24px;
+    color: $yellow
   }
   p {
-    font-size: 20px;
+    color: $white;
+  }
+  .avatar {
+    width: 40px;
+    vertical-align: middle;
+  }
+  span {
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+}
+.showSection {
+  ul {
+    display: flex;
+    flex-wrap: wrap;
   }
 }

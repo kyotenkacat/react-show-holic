@@ -1,18 +1,17 @@
 import { useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { updateUser } from 'store/auth-slice';
 import { map } from 'lodash';
 import Modal from 'component/UI/Modal';
-import Button from 'component/UI/Button';
 import classes from './EditModal.module.scss';
 import classNames from 'classnames/bind';
 const cx = classNames.bind(classes);
 
 const EditModal = (props) => {
-
+  
+  const { userInfo, onClose } = props;
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
-  const [photoURL, setPhotoURL] = useState(user.photoURL || 1);
+  const [avatar, setAvatar] = useState(userInfo.avatar || 1);
   const [error, setError] = useState(null);
   const nameRef = useRef();
 
@@ -22,12 +21,18 @@ const EditModal = (props) => {
       return;
     }
     dispatch(
-      updateUser(nameRef.current.value, photoURL, props.onClose)
+      updateUser(nameRef.current.value, avatar, onClose)
     );
-  }
+  };
 
   return (
-    <Modal onClose={props.onClose} className={classes.editModal}>
+    <Modal
+      className={classes.editModal}
+      onClose={onClose}
+      hasAction={true}
+      onConfirm={saveHandler}
+      confirmText="儲存"
+    >
       <div>
         <label>頭像</label>
         {
@@ -38,9 +43,9 @@ const EditModal = (props) => {
               alt={`avatar${num}`}
               className={cx({
                 avatar: true,
-                active: photoURL === num,
+                active: avatar === num,
               })}
-              onClick={() => setPhotoURL(num)}
+              onClick={() => setAvatar(num)}
             />
           )
         }
@@ -49,7 +54,7 @@ const EditModal = (props) => {
         <label htmlFor="displayName">名稱</label>
         <input
           ref={nameRef}
-          defaultValue={user.displayName}
+          defaultValue={userInfo.name}
           id="displayName"
           type="text"
           maxLength="10"
@@ -58,20 +63,8 @@ const EditModal = (props) => {
           error && <p className={classes.error}>{error}</p>
         }
       </div>
-      <div className={classes.action}>
-        <Button
-          text="取消"
-          className="cancel"
-          onClick={props.onClose}
-        />
-        <Button
-          text="儲存"
-          className="primary"
-          onClick={saveHandler}
-        />
-      </div>
     </Modal>
-  )
+  );
 };
 
 export default EditModal;

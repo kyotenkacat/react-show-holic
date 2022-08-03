@@ -8,14 +8,29 @@
     flex-wrap: wrap;
   }
   li {
-    font-size: 20px;
     margin: 0 10px;
+    i, span {
+      @include rwdmax($mobile) {
+        font-size: 18px;
+      }
+      @include rwd($mobile + 1, $laptop - 1) {
+        font-size: 20px;
+      }
+      @include rwdmin($laptop) {
+        font-size: 22px;
+      }
+    }
   }
 }
 .button {
   border: none;
-  color: #ffffff;
-  &.active, &:hover:not([disabled]) {
+  color: $white;
+  &.active {
     color: $yellow;
+  }
+  &:not([disabled]) {
+    @include hover {
+      color: $yellow;
+    }
   }
 }

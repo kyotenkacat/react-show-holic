@@ -1,7 +1,7 @@
 @import 'style/variables.scss';
 
 .editModal {
-  width: 300px;
+  width: 320px;
   text-align: center;
   div {
     &:first-of-type {
@@ -10,16 +10,16 @@
   }
   label {
     display: block;
-    margin-bottom: 5px;
-    font-size: 20px;
   }
   input {
     width: 100%;
     padding: 6px;
     border-radius: 12px;
-    background: #aaaaaa;
+    background: $lightGray;
+    border: 2px solid transparent;
     &:focus {
-      outline: 1px solid $yellow;
+      outline: none;
+      border-color: $yellow;
     }
   }
 }
@@ -28,7 +28,7 @@
   margin: 6px;
   cursor: pointer;
   border-radius: 50%;
-  border: 2px solid #ffffff;
+  border: 2px solid $white;
   &.active {
     border-color: $yellow;
   }

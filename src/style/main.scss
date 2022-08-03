@@ -3,54 +3,119 @@
 * {
   box-sizing: border-box;
 }
-
+html {
+  line-height: 1.4;
+}
 body {
-  background-color: #1b1b1b;
+  background: #1b1b1b;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
 }
-
-iframe {
-  display: none;
-}
-
-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
 main {
   padding-top: 20px;
   position: relative;
+  margin: auto;
 }
-
 a {
   display: inline-block;
   text-decoration: none;
 }
-
 .noData {
-  background-color: $deepGray;
+  background: $deepGray;
   text-align: center;
   width: 300px;
   margin: 20px auto;
   border-radius: 12px;
   padding: 10px;
   p {
-    color: #ffffff;
+    color: $white;
   }
 }
-
 .hide {
   display: none;
 }
-
 .errorMsg {
   color: $red;
   font-size: 16px;
 }
-
 ul {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+.avatar {
+  border-radius: 50%;
+  border: 1px solid $white;
+}
+@include rwdmax($mobile) {
+  h1 {
+    font-size: 32px;
+  }
+  h2 {
+    font-size: 24px;
+  }
+  h3 {
+    font-size: 22px;
+  }
+  h4 {
+    font-size: 18px;
+  }
+  p, label {
+    font-size: 14px;
+  }
+  h1, h2, h3, h4, p, label {
+    margin-block-start: 6px;
+    margin-block-end: 6px;
+  }
+  span, input {
+    font-size: 14px;
+  }
+}
+@include rwd($mobile + 1, $laptop - 1) {
+  h1 {
+    font-size: 36px;
+  }
+  h2 {
+    font-size: 26px;
+  }
+  h3 {
+    font-size: 24px;
+  }
+  h4 {
+    font-size: 20px;
+  }
+  p, label {
+    font-size: 16px;
+  }
+  h1, h2, h3, h4, p, label {
+    margin-block-start: 8px;
+    margin-block-end: 8px;
+  }
+  span, input {
+    font-size: 14px;
+  }
+}
+@include rwdmin($laptop) {
+  h1 {
+    font-size: 40px;
+  }
+  h2 {
+    font-size: 28px;
+  }
+  h3 {
+    font-size: 26px;
+  }
+  h4 {
+    font-size: 22px;
+  }
+  p, label {
+    font-size: 18px;
+  }
+  h1, h2, h3, h4, p, label {
+    margin-block-start: 10px;
+    margin-block-end: 10px;
+  }
+  span, input {
+    font-size: 16px;
+  }
 }

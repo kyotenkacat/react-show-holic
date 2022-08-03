@@ -3,21 +3,13 @@ import { findIndex, find, forEach } from 'lodash';
 import { auth, database } from 'util/firebase';
 import {
   ref, onValue, query, orderByChild, equalTo,
-  push, set, update
+  push, set, update, remove
 } from 'firebase/database';
 import { uiActions } from 'store/ui-slice';
 
 const playListSlice = createSlice({
   name: 'playList',
   initialState: {
-    // itemList: [
-    //   {
-    //     id: 1,
-    //     title: '夏日浪漫戀曲',
-    //     description: '在熱熱的夏天談場酸酸甜甜的戀愛',
-    //     showIdList: ['tt5788792'],
-    //   },
-    // ],
     itemList: [],
   },
   reducers: {
@@ -33,7 +25,7 @@ const playListSlice = createSlice({
       match.description = action.payload.description;
     },
     deletePlayList(state, action) {
-      const matchIndex = findIndex(state.itemList, ['id', action.payload.id]);
+      const matchIndex = findIndex(state.itemList, ['id', action.payload]);
       state.itemList.splice(matchIndex, 1);
     },
     toggleShow(state, action) {
@@ -54,29 +46,36 @@ export default playListSlice;
 
 export const getPlayList = () => {
   return async (dispatch) => {
-    onValue(query(ref(database, `/playList`), orderByChild('ownerUid'), equalTo(auth.currentUser.uid)),
+    onValue(query(ref(database, `/playList`), orderByChild('uid'), equalTo(auth.currentUser.uid)),
       (snapshot) => {
-        console.log('getPlayList snapshot.val():', snapshot.val())
-        const playList = [];
+        const itemList = [];
         forEach(snapshot.val(), (item, id) => {
-          playList.push({
+          const data = {
             id,
             title: item.title,
             description: item.description,
-            showIdList: item.showIdList ? item.showIdList.split(',') : [],
+            showIdList: [],
+          };
+          forEach(item.showIdList, (value, showId) => {
+            data.showIdList.push(showId);
           });
-        })
+          itemList.push(data);
+        });
         dispatch(
-          playListActions.setItemList(playList)
+          playListActions.setItemList(itemList)
         );
       },
-      (error)=> {
-        console.log('error:', error)
+      ()=> {
+        dispatch(
+          uiActions.addNotification({
+            type: 'error',
+          })
+        );
       },
       { onlyOnce: true }
     );
   };
-}
+};
 
 export const addPlayList = ({ title, description, successCallback }) => {
   return async (dispatch) => {
@@ -84,10 +83,10 @@ export const addPlayList = ({ title, description, successCallback }) => {
       uiActions.setLoading(true)
     );
 
-    const playListRef = ref(database, `/playList`);
+    const playListRef = ref(database, '/playList');
     const newListRef = push(playListRef);
     const data = {
-      ownerUid: auth.currentUser.uid,
+      uid: auth.currentUser.uid,
       title,
       description,
       showIdList: '',
@@ -112,11 +111,16 @@ export const addPlayList = ({ title, description, successCallback }) => {
         if (successCallback) {
           successCallback();
         }
-      }).catch((error) => {
-        console.error(error);
+      })
+      .catch(() => {
+        dispatch(
+          uiActions.addNotification({
+            type: 'error',
+          })
+        );
       });
   };
-}
+};
 
 export const updatePlayList = ({ playListId, title, description }) => {
   return async (dispatch) => {
@@ -124,8 +128,7 @@ export const updatePlayList = ({ playListId, title, description }) => {
       uiActions.setLoading(true)
     );
 
-    const data = { title, description };
-    update(ref(database, `/playList/${playListId}`), data)
+    update(ref(database, `/playList/${playListId}`), { title, description })
       .finally(() => {
         dispatch(
           uiActions.setLoading(false)
@@ -145,14 +148,87 @@ export const updatePlayList = ({ playListId, title, description }) => {
             message: '已儲存',
           })
         );
-      }).catch((error) => {
-        console.error(error);
+      })
+      .catch(() => {
+        dispatch(
+          uiActions.addNotification({
+            type: 'error',
+          })
+        );
       });
   };
-}
+};
 
-export const getPlayListById = (playListId) => {
-  console.log('playListId:', playListId)
+export const deletePlayList = (playListId) => {
+  return async (dispatch) => {
+    dispatch(
+      uiActions.setLoading(true)
+    );
+
+    remove(ref(database, `/playList/${playListId}`))
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
+        );
+      })
+      .then(() => {
+        dispatch(
+          playListActions.deletePlayList(playListId)
+        );
+        dispatch(
+          uiActions.addNotification({
+            type: 'success',
+            message: '已刪除',
+          })
+        );
+      })
+      .catch(() => {
+        dispatch(
+          uiActions.addNotification({
+            type: 'error',
+          })
+        );
+      });
+  };
+};
+
+export const toggleShow = ({ playListId, type, showId }) => {
+  return (dispatch) => {
+    
+    dispatch(
+      uiActions.setLoading(true)
+    );
+
+    const data = { [showId]: type === 'add' ? true : null };
+    update(ref(database, `/playList/${playListId}/showIdList`), data)
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
+        );
+      })
+      .then(() => {
+        dispatch(
+          playListActions.toggleShow({ id: playListId, type, showId })
+        );
+        dispatch(getPlayList());
+        dispatch(
+          uiActions.addNotification({
+            type: 'success',
+            message: type === 'add' ? '已加入片單！' : '已從片單移除！'
+          })
+        );
+      })
+      .catch(() => {
+        dispatch(
+          uiActions.addNotification({
+            type: 'error',
+          })
+        );
+      });
+  };
+};
+
+export const getPlayListById = (playListId, setPlayList) => {
   return async (dispatch) => {
     dispatch(
       uiActions.setLoading(true)
@@ -163,15 +239,30 @@ export const getPlayListById = (playListId) => {
         dispatch(
           uiActions.setLoading(false)
         );
-        console.log('getPlayListById snapshot.val():', snapshot.val())
+        const value = snapshot.val();
+        const data = {
+          id: playListId,
+          title: value.title,
+          description: value.description,
+          uid: value.uid,
+          showIdList: [],
+        };
+        forEach(value.showIdList, (value, showId) => {
+          data.showIdList.push(showId);
+        });
+        setPlayList(data);
       },
-      (error)=> {
+      ()=> {
         dispatch(
           uiActions.setLoading(false)
         );
-        console.log('error:', error)
+        dispatch(
+          uiActions.addNotification({
+            type: 'error',
+          })
+        );
       },
       { onlyOnce: true }
     );
   };
-}
+};

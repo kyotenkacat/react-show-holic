@@ -1,14 +1,24 @@
 @import 'style/variables.scss';
 
+.title {
+  display: block;
+  line-height: 1.4;
+  span {
+    font-size: 16px;
+  }
+}
 .textareaAutoSize {
   resize: none;
   border: none;
   padding: 10px;
   font-size: 16px;
-  line-height: 1.15;
+  line-height: 1.4;
   border-radius: 12px;
-  background: #aaaaaa;
+  width: 100%;
+  background: $lightGray;
+  border: 2px solid transparent;
   &:focus {
-    outline: 2px solid $yellow;
+    outline: none;
+    border-color: $yellow;
   }
 }

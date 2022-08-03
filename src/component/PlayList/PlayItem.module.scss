@@ -2,32 +2,32 @@
 
 .item {
   position: relative;
-  height: 120px;
   margin: 1%;
   background: $deepGray;
   border-radius: 12px;
   overflow: hidden;
   @include rwdmax($pad) {
-    width: 98%;
+    width: 48%;
+    height: 120px;
   }
-  @include rwd($pad, $laptop) {
+  @include rwd($pad + 1, $laptop - 1) {
     width: 31.333%;
+    height: 120px;
   }
   @include rwdmin($laptop) {
     width: 23%;
+    height: 140px;
   }
-  h3 {
+  h4 {
     position: absolute;
     bottom: 5%;
     left: 8%;
-    margin: 0;
-    line-height: 1.4;
-    font-size: 20px;
-    color: #ffffff;
-    &:hover {
-      cursor: pointer;
-      color: $yellow;
-      text-decoration: underline;
+    a {
+      color: $white;
+      @include hover {
+        color: $yellow;
+        text-decoration: underline;
+      }
     }
   }
 }
@@ -64,26 +64,36 @@
   position: absolute;
   top: 4%;
   right: 4%;
+  @include rwdmax($mobile) {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: right;
+    flex-direction: column-reverse;
+  }
   .menu {
-    animation: appear 0.2s ease-out forwards;
+    @include appearAnimation(0.3s);
+  }
+  .action {
+    @include rwdmax($mobile) {
+      margin-bottom: 4px;
+    }
+    @include rwdmin($mobile + 1) {
+      display: inline-block;
+    }
   }
   .button {
     border-color: transparent;
-    background: rgba(0, 0, 0, 0.7);
-    font-size: 14px;
-    color: #ffffff;
+    color: $white;
     margin: 0 2px;
-    &:hover {
+    @include rwdmax($mobile) {
+      background: rgba(0, 0, 0, 0.9);
+    }
+    @include rwdmin($mobile + 1) {
+      background: rgba(0, 0, 0, 0.7);
+    }
+    @include hover {
       background: $yellow;
       color: $red;
     }
-  }
-}
-@keyframes appear {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }

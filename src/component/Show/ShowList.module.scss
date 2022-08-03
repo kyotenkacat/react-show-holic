@@ -3,30 +3,12 @@
 .showList {
   width: 90%;
   margin: auto;
-  animation: appear 1s ease-out forwards;
+  @include slideInAnimation(1s);
 }
 .showSection {
+  margin: 0 -1%;
   ul {
     display: flex;
     flex-wrap: wrap;
-  }
-}
-.loading {
-  text-align: center;
-  color: #ffffff;
-}
-.error {
-  text-align: center;
-  color: rgb(154, 59, 59);
-}
-@keyframes appear {
-  from {
-    opacity: 0;
-    transform: translateY(3rem);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }

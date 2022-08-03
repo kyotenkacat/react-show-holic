@@ -1,3 +1,5 @@
+@import 'style/variables.scss';
+
 .loading {
   position: fixed;
   top: 0;
@@ -8,7 +10,7 @@
   background: rgba(0, 0, 0, 0.8);
   i {
     font-size: 36px;
-    color: #fff;
+    color: $white;
     position: absolute;
     top: 50%;
     left: 50%;

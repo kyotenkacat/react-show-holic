@@ -1,10 +1,5 @@
 @import 'style/variables.scss';
 
-.seperate {
-  border-top: 1px solid #aaaaaa;
-  width: 100%;
-  margin: 30px auto;
-}
 .form {
   text-align: center;
 }
@@ -13,19 +8,24 @@
   margin: 0 auto 20px;
   i {
     cursor: pointer;
-    font-size: 24px;
-    color: #aaaaaa;
+    color: $lightGray;
     margin: 0 2px;
+    @include rwdmax($mobile) {
+      font-size: 24px;
+    }
+    @include rwd($mobile + 1, $laptop - 1) {
+      font-size: 26px;
+    }
+    @include rwdmin($laptop) {
+      font-size: 28px;
+    }
     &.active {
       color: $red;
     }
   }
 }
 .review {
-  textarea {
-    width: 80%;
-    margin: auto;
-  }
+  margin: 20px auto 0;
 }
 .action {
   margin: 20px 0 auto;

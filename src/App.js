@@ -1,22 +1,19 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from 'util/firebase';
-import Layout from './component/Layout/Layout';
+import { authActions, getUserInfoList } from 'store/auth-slice';
+import { getShowList } from 'store/show-slice';
+import { getFavList } from 'store/favorite-slice';
 import ShowList from './component/Show/ShowList';
 import Profile from './component/Profile/Profile';
 import PlayListDetail from './component/PlayList/PlayListDetail';
 import NotificationList from './component/UI/Notification/NotificationList';
 import AuthModal from './component/Auth/AuthModal';
 import Loading from './component/UI/Loading';
-import { authActions } from 'store/auth-slice';
-import { getShowList } from 'store/show-slice';
-import { getFavList } from 'store/favorite-slice';
+import Header from './component/Layout/Header';
+import Footer from './component/Layout/Footer';
 
 function App() {
 
@@ -26,8 +23,8 @@ function App() {
   
   useEffect(() => {
     dispatch(getShowList());
+    dispatch(getUserInfoList());
     onAuthStateChanged(auth, (user) => {
-      console.log('app useEffect user:', user)
       dispatch(
         authActions.setUser({
           user: user ? {
@@ -51,15 +48,16 @@ function App() {
     <BrowserRouter>
       { loading && <Loading /> }
       { authModalActive && <AuthModal /> }
-      <Layout>
+      <Header />
+      <main>
         <NotificationList />
-        {/* {showCart && <Cart />} */}
         <Routes>
           <Route path="profile" element={<Profile />} />
           <Route path="playListDetail/:playListId" element={<PlayListDetail />} />
           <Route path="/" element={<ShowList />} />
         </Routes>
-      </Layout>
+      </main>
+      <Footer />
     </BrowserRouter>
   );
 }

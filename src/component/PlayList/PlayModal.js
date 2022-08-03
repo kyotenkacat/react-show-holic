@@ -1,11 +1,10 @@
 import { useRef, useState } from 'react';
 import { trim } from 'lodash';
-import Modal from 'component/UI/Modal';
-import Button from 'component/UI/Button';
-import TextareaAutoSize from 'component/UI/TextareaAutoSize';
-import classes from './PlayModal.module.scss';
 import { useDispatch } from 'react-redux';
 import { addPlayList, updatePlayList } from 'store/playList-slice';
+import Modal from 'component/UI/Modal';
+import TextareaAutoSize from 'component/UI/TextareaAutoSize';
+import classes from './PlayModal.module.scss';
 
 const PlayModal = (props) => {
 
@@ -23,7 +22,7 @@ const PlayModal = (props) => {
     if (titleError && trim(titleRef.current.value)) {
       setTitleError(false);
     }
-  }
+  };
 
   const addHandler = () => {
     if (!trim(titleRef.current.value)) {
@@ -37,7 +36,7 @@ const PlayModal = (props) => {
         successCallback: onClose,
       })
     );
-  }
+  };
   
   const editHandler = () => {
     if (!trim(titleRef.current.value)) {
@@ -52,51 +51,42 @@ const PlayModal = (props) => {
       })
     );
     onClose();
-  }
+  };
 
   return (
-    <Modal onClose={onClose} className={classes.playModal}>
+    <Modal
+      className={classes.playModal}
+      hasAction={true}
+      onClose={onClose}
+      onConfirm={type === 'add' ? addHandler : editHandler}
+      confirmText="儲存"
+    >
       <div className={classes.form}>
-        <p className={classes.title}>片單名稱</p>
         <TextareaAutoSize
+          ref={titleRef}
+          title="片單名稱"
           name="title"
-          minRows="1"
-          maxRows="2"
-          // fix me 中文跟英文一個字都是一個字...
-          // fix me 超過字數後如果還繼續打字的提醒
-          // (最多字數 8/20)
-          maxLength="20"
+          minRows={1}
+          maxRows={2}
+          maxLength={20}
           defaultValue={item.title}
           onChange={titleHandler}
-          ref={titleRef}
         />
         {
           titleError && <p className="errorMsg">片單名稱為必填喔！</p>
         }
-        <p className={classes.title}>描述</p>
         <TextareaAutoSize
-          name="description"
-          minRows="3"
-          maxRows="5"
-          maxLength="200"
-          defaultValue={item.description}
           ref={descriptionRef}
-        />
-      </div>
-      <div className={classes.action}>
-        <Button
-          text="取消"
-          className="cancel"
-          onClick={onClose}
-        />
-        <Button
-          text="儲存"
-          className="primary"
-          onClick={type === 'add' ? addHandler : editHandler}
+          title="描述"
+          name="description"
+          minRows={6}
+          maxRows={12}
+          maxLength={200}
+          defaultValue={item.description}
         />
       </div>
     </Modal>
-  )
+  );
 };
 
 export default PlayModal;

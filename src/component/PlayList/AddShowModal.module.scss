@@ -1,11 +1,13 @@
 @import 'style/variables.scss';
 
 .AddShowModal {
-  width: 80%;
-  max-width: 600px;
   @include rwdmax($mobile) {
-    width: 90%;
     min-width: 320px;
+    max-width: 380px;
+  }
+  @include rwdmin($mobile + 1) {
+    width: 80%;
+    max-width: 600px;
   }
 }
 .showList {
@@ -25,26 +27,30 @@
   }
 }
 .info {
-  width: 65%;
+  width: 60%;
   padding: 0 5%;
 }
 .type {
-  width: 10%;
+  width: 15%;
+  text-align: center;
 }
 .actions {
   width: 10%;
   text-align: center;
-  .button {
+  .active {
+    border-color: $yellow;
+    background: $yellow;
+    color: $deepGray;
+    @include hover {
+      color: $red;
+    }
+  }
+  .inActive {
     color: $yellow;
     border-color: $yellow;
-    &:hover {
+    @include hover {
       background: $yellow;
       color: $red;
     }
   }
-}
-.seperate {
-  width: 80%;
-  margin: 10px 10%;
-  border-bottom: 1px solid #aaa;
 }

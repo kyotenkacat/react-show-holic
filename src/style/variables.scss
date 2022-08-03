@@ -6,13 +6,8 @@ $desktop: 1920px;
 $yellow: #f5c518;
 $red: #ff1755;
 $deepGray: #252525;
-
-
-$secondary: #26a69a;
-$positive: #21ba45;
-$negative: #c10015;
-$info: #31ccec;
-$warning: #f2c037;
+$lightGray: #aaaaaa;
+$white: #ffffff;
 
 @mixin rwdmin($val) {
   @media screen and (min-width: $val) {
@@ -29,5 +24,41 @@ $warning: #f2c037;
 @mixin rwd($minVal, $maxVal) {
   @media screen and (min-width: $minVal) and (max-width: $maxVal) {
     @content;
+  }
+}
+
+@mixin hover {
+  @media (pointer: fine) {
+    &:hover {
+      @content;
+    }
+  }
+} 
+
+@mixin appearAnimation($sec) {
+  animation: appear $sec ease-out forwards;
+  @keyframes appear {
+    from {
+      opacity: 0;
+    }
+  
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@mixin slideInAnimation($sec) {
+  animation: slideIn $sec ease-out forwards;
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(3rem);
+    }
+  
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
