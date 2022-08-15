@@ -10,6 +10,7 @@
 - React-router
 - Firebase
 - Sass
+- RWD
 
 ## **網站功能**
 - **影劇情報**
