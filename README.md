@@ -9,7 +9,8 @@
 - Redux
 - React-router
 - Firebase
-- Sass
+- Scss
+- RWD
 
 ## **網站功能**
 - **影劇情報**
