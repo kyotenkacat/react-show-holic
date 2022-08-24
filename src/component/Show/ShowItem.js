@@ -10,7 +10,7 @@ const ShowItem = (props) => {
     <Fragment>
       <li onClick={(e) => onOpenModal(e, show)} className={classes.item}>
         <div className={classes.cover}>
-          <img src={show.imgUrl} className={classes.img} alt={`poster of ${show.title}`} />
+          <img src={show.imgUrl} className={classes.img} alt={`poster of ${show.originalTitle}`} />
           <div className={classes.mask}></div>
         </div>
         <div className={classes.info}>

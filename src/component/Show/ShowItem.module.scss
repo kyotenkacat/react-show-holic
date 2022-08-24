@@ -8,13 +8,17 @@
     width: 48%;
     height: 240px;
   }
-  @include rwd($pad + 1, $laptop - 1) {
+  @include rwd($pad + 1, $laptop) {
     width: 31.333%;
     height: 360px;
   }
-  @include rwdmin($laptop) {
+  @include rwd($laptop + 1, $desktop) {
     width: 23%;
     height: 380px;
+  }
+  @include rwdmin($desktop + 1) {
+    width: 23%;
+    height: 500px;
   }
 }
 .cover {
