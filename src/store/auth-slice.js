@@ -3,7 +3,7 @@ import {
   signOut, signInAnonymously, signInWithPopup,
   GoogleAuthProvider, createUserWithEmailAndPassword,
   signInWithEmailAndPassword, deleteUser, EmailAuthProvider,
-  linkWithCredential, linkWithPopup,
+  linkWithCredential, linkWithPopup, browserPopupRedirectResolver
 } from 'firebase/auth';
 import { auth, database } from 'util/firebase';
 import { ref, onValue, remove, set } from 'firebase/database';
@@ -46,11 +46,6 @@ export const signOutUser = (successCallback) => {
     );
 
     signOut(auth)
-      .finally(() => {
-        dispatch(
-          uiActions.setLoading(false)
-        );
-      })
       .then(() => {
         dispatch(
           favoriteActions.setItemList([])
@@ -75,6 +70,11 @@ export const signOutUser = (successCallback) => {
             errorCode: error.code,
           })
         );
+      })
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
+        );
       });
   };
 };
@@ -86,11 +86,6 @@ export const signInAsGuest = (successCallback) => {
     );
 
     signInAnonymously(auth)
-      .finally(() => {
-        dispatch(
-          uiActions.setLoading(false)
-        );
-      })
       .then(() => {
         dispatch(
           uiActions.addNotification({
@@ -109,6 +104,11 @@ export const signInAsGuest = (successCallback) => {
             errorCode: error.code,
           })
         );
+      })
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
+        );
       });
   };
 };
@@ -120,12 +120,7 @@ export const signInByGoogle = (successCallback) => {
     );
 
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .finally(() => {
-        dispatch(
-          uiActions.setLoading(false)
-        );
-      })
+    signInWithPopup(auth, provider, browserPopupRedirectResolver)
       .then(() => {
         dispatch(
           uiActions.addNotification({
@@ -144,6 +139,11 @@ export const signInByGoogle = (successCallback) => {
             errorCode: error.code,
           })
         );
+      })
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
+        );
       });
   };
 };
@@ -155,11 +155,6 @@ export const signUpByEmail = (email, password, successCallback) => {
     );
 
     createUserWithEmailAndPassword(auth, email, password)
-      .finally(() => {
-        dispatch(
-          uiActions.setLoading(false)
-        );
-      })
       .then(() => {
         dispatch(
           uiActions.addNotification({
@@ -178,6 +173,11 @@ export const signUpByEmail = (email, password, successCallback) => {
             errorCode: error.code,
           })
         );
+      })
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
+        );
       });
   };
 };
@@ -189,12 +189,7 @@ export const signInByEmail = (email, password, successCallback) => {
     );
 
     signInWithEmailAndPassword(auth, email, password)
-      .finally(() => {
-        dispatch(
-          uiActions.setLoading(false)
-        );
-      })
-      .then((response) => {
+      .then(() => {
         dispatch(
           uiActions.addNotification({
             type: 'success',
@@ -212,6 +207,11 @@ export const signInByEmail = (email, password, successCallback) => {
             errorCode: error.code,
           })
         );
+      })
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
+        );
       });
   };
 };
@@ -223,11 +223,6 @@ export const deleteGuest = (successCallback) => {
     );
 
     deleteUser(auth.currentUser)
-      .finally(() => {
-        dispatch(
-          uiActions.setLoading(false)
-        );
-      })
       .then(() => {
         dispatch(
           favoriteActions.setItemList([])
@@ -252,6 +247,11 @@ export const deleteGuest = (successCallback) => {
             message: error.code,
           })
         );
+      })
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
+        );
       });
     remove(ref(database, `/userList/${auth.currentUser.uid}`));
     remove(ref(database, `/favoriteList/${auth.currentUser.uid}`));
@@ -266,11 +266,6 @@ export const linkGuestToGoogle = (successCallback) => {
 
     const provider = new GoogleAuthProvider();
     linkWithPopup(auth.currentUser, provider)
-      .finally(() => {
-        dispatch(
-          uiActions.setLoading(false)
-        );
-      })
       .then((result) => {
         const user = result.user;
         dispatch(
@@ -292,12 +287,18 @@ export const linkGuestToGoogle = (successCallback) => {
         if(successCallback) {
           successCallback();
         }
-      }).catch((error) => {
+      })
+      .catch((error) => {
         dispatch(
           uiActions.addNotification({
             type: 'error',
             message: error.code,
           })
+        );
+      })
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
         );
       });
   };
@@ -311,11 +312,6 @@ export const linkGuestToEmail = (email, password, successCallback) => {
 
     const credential = EmailAuthProvider.credential(email, password);
     linkWithCredential(auth.currentUser, credential)
-      .finally(() => {
-        dispatch(
-          uiActions.setLoading(false)
-        );
-      })
       .then((result) => {
         const user = result.user;
         dispatch(
@@ -344,6 +340,11 @@ export const linkGuestToEmail = (email, password, successCallback) => {
             message: error.code,
           })
         );
+      })
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
+        );
       });
   };
 };
@@ -356,11 +357,6 @@ export const updateUser = (name, avatar, successCallback) => {
 
     const data = { name, avatar };
     set(ref(database, `/userList/${auth.currentUser.uid}`), data)
-      .finally(() => {
-        dispatch(
-          uiActions.setLoading(false)
-        );
-      })
       .then(() => {
         dispatch(getUserInfoList());
         dispatch(
@@ -372,12 +368,18 @@ export const updateUser = (name, avatar, successCallback) => {
         if (successCallback) {
           successCallback();
         }
-      }).catch((error) => {
+      })
+      .catch((error) => {
         dispatch(
           uiActions.addNotification({
             type: 'error',
             message: error.code,
           })
+        );
+      })
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
         );
       });
   };

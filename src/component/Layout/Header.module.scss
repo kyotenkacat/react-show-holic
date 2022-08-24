@@ -1,6 +1,7 @@
 @import 'style/variables.scss';
 
 header {
+  max-width: $desktop;
   margin: auto;
   padding: 1% 5%;
   display: flex;

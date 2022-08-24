@@ -33,7 +33,8 @@
   background: $yellow;
   color: $deepGray;
   @include hover {
-    color: $red;
+    color: $black;
+    border-color: $white;
   }
 }
 .cancel {

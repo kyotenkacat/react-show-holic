@@ -20,7 +20,7 @@
     margin: 0 2px;
     @include hover {
       background: $yellow;
-      color: $red;
+      color: $deepGray;
     }
   }
   .data {
@@ -29,7 +29,7 @@
     display: inline-block;
   }
   .number {
-    color: $red;
+    color: $yellow;
     font-weight: bold;
     display: block;
     margin-bottom: 6px;

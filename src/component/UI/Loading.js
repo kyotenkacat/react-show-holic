@@ -6,7 +6,7 @@ const Loading = (props) => {
     <div className={classes.loading}>
       <i className="fa-solid fa-spinner" />
     </div>
-  )
+  );
 };
 
 export default Loading;

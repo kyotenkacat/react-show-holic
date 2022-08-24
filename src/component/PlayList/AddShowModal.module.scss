@@ -42,7 +42,8 @@
     background: $yellow;
     color: $deepGray;
     @include hover {
-      color: $red;
+      color: $black;
+      border-color: $white;
     }
   }
   .inActive {
@@ -50,7 +51,7 @@
     border-color: $yellow;
     @include hover {
       background: $yellow;
-      color: $red;
+      color: $deepGray;
     }
   }
 }

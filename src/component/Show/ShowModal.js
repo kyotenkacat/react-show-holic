@@ -1,5 +1,5 @@
 import { find } from 'lodash';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getShowReviewList } from 'store/show-slice';
 import { constant } from 'asset/constant';
@@ -13,7 +13,7 @@ const cx = classNames.bind(classes);
 const ShowModal = (props) => {
 
   const dispatch = useDispatch();
-  const { show, isFav, onClose } = props;
+  const { show, onClose } = props;
   const user = useSelector((state) => state.auth.user);
   const userInfoList = useSelector((state) => state.auth.userInfoList);
   const [reviewList, setReviewList] = useState([]);
@@ -27,7 +27,7 @@ const ShowModal = (props) => {
     resizeHandler();
     window.addEventListener("resize", resizeHandler);
     return () => window.removeEventListener("resize", resizeHandler);
-  }, [isMobile]);
+  }, []);
 
   useEffect(() => {
     dispatch(getShowReviewList(show.id, setReviewList));
@@ -59,7 +59,7 @@ const ShowModal = (props) => {
         </div>
         <div className={classes.imgContainer}>
           <img src={show.imgUrl} alt="show img" className={classes.img} />
-          <Favorite showId={show.id} isFav={isFav} onClose={onClose} />
+          <Favorite showId={show.id} onClose={onClose} />
         </div>
         {
           isMobile && <p className={classes.description}>{show.description}</p>

@@ -8,6 +8,7 @@ $red: #ff1755;
 $deepGray: #252525;
 $lightGray: #aaaaaa;
 $white: #ffffff;
+$black: #000000;
 
 @mixin rwdmin($val) {
   @media screen and (min-width: $val) {

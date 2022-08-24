@@ -22,13 +22,13 @@ const PlayListDetail = (props) => {
   }, [params]);
 
   useEffect(() => {
-    if(playListId) {
+    if (playListId) {
       dispatch(getPlayListById(playListId, setPlayList));
     }
   }, [dispatch, playListId]);
   
   useEffect(() => {
-    if(playList.showIdList && playList.showIdList.length > 0) {
+    if (playList.showIdList && playList.showIdList.length > 0) {
       const list = filter(showList, show => playList.showIdList.includes(show.id));
       setDisplayList(list);
     }

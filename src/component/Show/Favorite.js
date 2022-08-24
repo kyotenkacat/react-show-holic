@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { indexOf } from 'lodash';
 import { toggleFav } from 'store/favorite-slice';
 import { authActions } from 'store/auth-slice';
 import Button from 'component/UI/Button';
@@ -10,12 +11,14 @@ const Favorite = (props) => {
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  
+  const favList = useSelector((state) => state.favorite.itemList);
+  const isFav = indexOf(favList, props.showId) !== -1;
+
   const toggleFavorite = () => {
     if (user) {
       dispatch(toggleFav({
         showId: props.showId,
-        type: props.isFav ? 'remove' : 'add',
+        type: isFav ? 'remove' : 'add',
       }));
     } else {
       dispatch(
@@ -29,7 +32,7 @@ const Favorite = (props) => {
 
   return (
     <Button
-      icon={`${props.isFav ? 'fa-solid' : 'fa-regular'} fa-heart`}
+      icon={`${isFav ? 'fa-solid' : 'fa-regular'} fa-heart`}
       className={cx({
         favorite: true,
         [props.className]: true,

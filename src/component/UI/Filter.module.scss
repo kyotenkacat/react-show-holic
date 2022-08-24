@@ -24,12 +24,16 @@
   margin-right: 8px;
   min-width: fit-content;
   &.active {
-    color: $red;
+    color: $deepGray;
     background: $yellow;
     border-color: $yellow;
+    @include hover {
+      color: $black;
+      border-color: $white;
+    }
   }
   @include hover {
-    color: $red;
+    color: $deepGray;
     background: $yellow;
     border-color: $yellow;
   }
@@ -69,7 +73,8 @@
     background: $yellow;
     color: $deepGray;
     @include hover {
-      color: $red;
+      color: $black;
+      border-color: $white;
     }
   }
 }

@@ -129,11 +129,6 @@ export const updatePlayList = ({ playListId, title, description }) => {
     );
 
     update(ref(database, `/playList/${playListId}`), { title, description })
-      .finally(() => {
-        dispatch(
-          uiActions.setLoading(false)
-        );
-      })
       .then(() => {
         dispatch(
           playListActions.updatePlayList({ 
@@ -155,6 +150,11 @@ export const updatePlayList = ({ playListId, title, description }) => {
             type: 'error',
           })
         );
+      })
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
+        );
       });
   };
 };
@@ -166,11 +166,6 @@ export const deletePlayList = (playListId) => {
     );
 
     remove(ref(database, `/playList/${playListId}`))
-      .finally(() => {
-        dispatch(
-          uiActions.setLoading(false)
-        );
-      })
       .then(() => {
         dispatch(
           playListActions.deletePlayList(playListId)
@@ -188,6 +183,11 @@ export const deletePlayList = (playListId) => {
             type: 'error',
           })
         );
+      })
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
+        );
       });
   };
 };
@@ -201,11 +201,6 @@ export const toggleShow = ({ playListId, type, showId }) => {
 
     const data = { [showId]: type === 'add' ? true : null };
     update(ref(database, `/playList/${playListId}/showIdList`), data)
-      .finally(() => {
-        dispatch(
-          uiActions.setLoading(false)
-        );
-      })
       .then(() => {
         dispatch(
           playListActions.toggleShow({ id: playListId, type, showId })
@@ -223,6 +218,11 @@ export const toggleShow = ({ playListId, type, showId }) => {
           uiActions.addNotification({
             type: 'error',
           })
+        );
+      })
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
         );
       });
   };

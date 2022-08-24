@@ -10,4 +10,4 @@ export const errorCode = {
   'auth/weak-password': '密碼格式錯誤，長度需大於6',
   'auth/credential-already-in-use': '連結帳號已存在',
   'auth/invalid-credential': '登入狀態已過期',
-}
+};

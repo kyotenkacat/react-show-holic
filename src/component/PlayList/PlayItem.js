@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from "react-router-dom";
 import { deletePlayList } from 'store/playList-slice';
@@ -15,19 +15,15 @@ const PlayList = (props) => {
   const dispatch = useDispatch();
   const { item } = props;
   const showList = useSelector((state) => state.show.itemList);
-  const [itemImg, setItemImg] = useState(null);
   const [actionMenuActive, setActionMenuActive] = useState(false);
   const [modalActive, setModalActive] = useState(false);
   const [addShowModalActive, setAddShowModalActive] = useState(false);
   const [warningModalActive, setWarningModalActive] = useState(false);
-
-  useEffect(() => {
-    if (item.showIdList.length !== 0) {
-      const show = find(showList, ['id', item.showIdList[0]]);
-      setItemImg(show.imgUrl);
-    }
+  const itemImg = useMemo(() => {
+    if (item.showIdList.length === 0) return null;
+    const show = find(showList, ['id', item.showIdList[0]]);
+    return show.imgUrl;
   }, [showList, item.showIdList]);
-
 
   const shareHandler = () => {
     navigator.clipboard.writeText(`${window.location.origin}/playListDetail/${item.id}`);

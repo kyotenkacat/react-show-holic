@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { onAuthStateChanged } from 'firebase/auth'
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from 'util/firebase';
 import { authActions, getUserInfoList } from 'store/auth-slice';
 import { getShowList } from 'store/show-slice';
@@ -24,7 +24,7 @@ function App() {
   useEffect(() => {
     dispatch(getShowList());
     dispatch(getUserInfoList());
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       dispatch(
         authActions.setUser({
           user: user ? {
@@ -41,7 +41,10 @@ function App() {
       if (user) {
         dispatch(getFavList());
       }
-    })
+    });
+    return () => {
+      unsubscribeAuth();
+    };
   }, [dispatch]);
 
   return (

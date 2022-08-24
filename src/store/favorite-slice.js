@@ -56,11 +56,6 @@ export const toggleFav = ({ type, showId }) => {
     );
 
     set(ref(database, `/favoriteList/${auth.currentUser.uid}/${showId}`), type === 'add' ? true : null)
-      .finally(() => {
-        dispatch(
-          uiActions.setLoading(false)
-        );
-      })
       .then(() => {
         dispatch(
           favoriteActions.toggleFav({ type, showId })
@@ -77,6 +72,11 @@ export const toggleFav = ({ type, showId }) => {
           uiActions.addNotification({
             type: 'error',
           })
+        );
+      })
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
         );
       });
   };

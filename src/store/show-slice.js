@@ -105,11 +105,6 @@ export const addReview = ({ showId, rating, comment }) => {
       comment,
     };
     set(newReviewRef, data)
-      .finally(() => {
-        dispatch(
-          uiActions.setLoading(false)
-        );
-      })
       .then(() => {
         dispatch(
           uiActions.addNotification({
@@ -124,6 +119,11 @@ export const addReview = ({ showId, rating, comment }) => {
             type: 'error',
           })
         );
+      })
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
+        );
       });
   };
 };
@@ -136,11 +136,6 @@ export const updateReview = ({ showId, reviewId, rating, comment }) => {
 
     const data = { rating, comment };
     update(ref(database, `/showReview/${showId}/${reviewId}`), data)
-      .finally(() => {
-        dispatch(
-          uiActions.setLoading(false)
-        );
-      })
       .then(() => {
         dispatch(
           uiActions.addNotification({
@@ -154,6 +149,11 @@ export const updateReview = ({ showId, reviewId, rating, comment }) => {
           uiActions.addNotification({
             type: 'error',
           })
+        );
+      })
+      .finally(() => {
+        dispatch(
+          uiActions.setLoading(false)
         );
       });
   };
