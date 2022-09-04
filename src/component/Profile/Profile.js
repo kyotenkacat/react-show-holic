@@ -4,7 +4,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { filter } from 'lodash';
 import { authActions, signOutUser, deleteGuest } from 'store/auth-slice';
 import { getPlayList } from 'store/playList-slice';
-import ShowItem from 'component/Show/ShowItem';
+import ShowList from 'component/Show/ShowList';
 import Button from 'component/UI/Button';
 import PlayList from 'component/PlayList/PlayList';
 import EditModal from 'component/Profile/EditModal';
@@ -104,6 +104,7 @@ const Profile = () => {
         
         <section className={classes.favSection}>
           <h2>收藏清單</h2>
+          <ShowList list={favShowList} />
           {
             favList.length === 0 &&
               <div className="noData">
@@ -117,16 +118,6 @@ const Profile = () => {
                 </Link>
               </div>
           }
-          <ul>
-            {
-              favShowList.map((show) => (
-                <ShowItem
-                  key={show.id}
-                  show={show}
-                />
-              ))
-            }
-          </ul>
         </section>
       </section>
       {

@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from 'util/firebase';
 import { authActions, getUserInfoList } from 'store/auth-slice';
 import { getShowList } from 'store/show-slice';
 import { getFavList } from 'store/favorite-slice';
-import ShowList from './component/Show/ShowList';
+import Home from './component/Home/Home';
 import Profile from './component/Profile/Profile';
 import PlayListDetail from './component/PlayList/PlayListDetail';
 import NotificationList from './component/UI/Notification/NotificationList';
@@ -57,7 +57,8 @@ function App() {
         <Routes>
           <Route path="profile" element={<Profile />} />
           <Route path="playListDetail/:playListId" element={<PlayListDetail />} />
-          <Route path="/" element={<ShowList />} />
+          <Route path="/" element={<Home />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>
       <Footer />

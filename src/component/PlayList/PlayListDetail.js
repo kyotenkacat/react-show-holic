@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getPlayListById } from 'store/playList-slice';
 import { filter } from 'lodash';
-import ShowItem from 'component/Show/ShowItem';
+import ShowList from 'component/Show/ShowList';
 import classes from './PlayListDetail.module.scss';
 
 const PlayListDetail = (props) => {
@@ -57,16 +57,7 @@ const PlayListDetail = (props) => {
         }
       </div>
       <section className={classes.showSection}>
-        <ul>
-          {
-            displayList.map((show) => (
-              <ShowItem
-                key={show.id}
-                show={show}
-              />
-            ))
-          }
-        </ul>
+        <ShowList list={displayList} />
         {
           displayList.length === 0 && <div className="noData">
             <p>無影片</p>
